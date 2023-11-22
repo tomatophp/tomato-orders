@@ -99,7 +99,7 @@ Route::middleware(['web','auth', 'splade', 'verified'])->name('admin.')->group(f
     Route::delete('admin/shipping-prices/{model}', [\TomatoPHP\TomatoOrders\Http\Controllers\ShippingPriceController::class, 'destroy'])->name('shipping-prices.destroy');
 });
 
-Route::middleware(['auth', 'splade', 'verified'])->name('admin.')->group(function () {
+Route::middleware(['web','auth', 'splade', 'verified'])->name('admin.')->group(function () {
     Route::get('admin/companies', [\TomatoPHP\TomatoOrders\Http\Controllers\CompanyController::class, 'index'])->name('companies.index');
     Route::get('admin/companies/api', [\TomatoPHP\TomatoOrders\Http\Controllers\CompanyController::class, 'api'])->name('companies.api');
     Route::get('admin/companies/create', [\TomatoPHP\TomatoOrders\Http\Controllers\CompanyController::class, 'create'])->name('companies.create');
