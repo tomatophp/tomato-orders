@@ -1,7 +1,7 @@
 <x-tomato-admin-container label="{{trans('tomato-admin::global.crud.edit')}} {{__('Order')}} #{{$model->uuid}} | [{{str($model->status)->upper()}}]">
     <x-splade-form class="flex flex-col space-y-4" action="{{route('admin.orders.update', $model->id)}}" method="post" :default="$model">
 
-        @php $company = \Modules\TomatoOrders\Entities\Branch::find(setting('ordering_direct_branch'))?->company @endphp
+        @php $company = \TomatoPHP\TomatoOrders\Models\Branch::find(setting('ordering_direct_branch'))?->company @endphp
         <div class="flex justify-between xl:gap-60 lg:gap-48 md:gap-16 sm:gap-8 sm:flex-row flex-col gap-4">
             <div class="w-full">
                 <div class=" my-4">
