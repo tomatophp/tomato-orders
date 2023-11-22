@@ -3,6 +3,7 @@
 namespace TomatoPHP\TomatoOrders\Services\Traits;
 
 use Illuminate\Http\Request;
+use TomatoPHP\TomatoEcommerce\Models\Cart;
 use TomatoPHP\TomatoOrders\Models\Order;
 use TomatoPHP\TomatoOrders\Models\ShippingPrice;
 
@@ -20,10 +21,9 @@ trait StoreWebOrder
         ]);
 
         $account = auth('accounts')->user();
-        if(class_exists(TomatoPHP\TomatoEcommerce\Models\Cart::class)){
-            $carts = Cart::query()->where('account_id', $account->id)->get();
-            $this->setCart($carts);
-        }
+
+        $carts = Cart::query()->where('account_id', $account->id)->get();
+        $this->setCart($carts);
 
         $shipping = $this->getShippingPrice($request);
         $total = $this->carts->sum('total') + $shipping;
