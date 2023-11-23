@@ -44,7 +44,7 @@
                         {{$model->address}}
                     </div>
                     <div class="text-sm">
-                        {{$model->country->name}} , {{$model->city->name}}, {{$model->area->name}}
+                        {{$model->country?->name}} , {{$model->city?->name}}, {{$model->area?->name}}
                     </div>
                 </div>
             </div>
@@ -204,7 +204,7 @@
         <x-tomato-admin-relations
             :model="$model"
             name="orderLogs"
-            :table="\Modules\TomatoOrders\Tables\OrderLogTable::class"
+            :table="\TomatoPHP\TomatoOrders\Tables\OrderLogTable::class"
             view="tomato-orders::order-logs.index"
         />
     </x-tomato-admin-relations-group>
