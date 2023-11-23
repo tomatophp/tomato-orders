@@ -1,7 +1,7 @@
 {
     "name": "tomatophp/tomato-orders",
     "type": "library",
-    "description": "full ordering and shipping system management for TomatoPHP",
+    "description": "full ordering and shipping system management with invoices templates for TomatoPHP",
     "keywords": [
         "php",
         "laravel",

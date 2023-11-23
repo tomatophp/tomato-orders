@@ -1,6 +1,8 @@
-# Tomato orders
+![Screenshot](https://github.com/tomatophp/tomato-orders/blob/master/art/screenshot.png)
 
-full ordering and shipping system management for TomatoPHP
+# Tomato Orders
+
+full ordering and shipping system management with invoices templates for TomatoPHP
 
 ## Installation
 
@@ -45,7 +47,7 @@ you can join our discord server to get support [TomatoPHP](https://discord.gg/VZ
 
 ## Docs
 
-you can check docs of this package on [Docs](https://docs.tomatophp.com/plugins/laravel-package-generator)
+you can check docs of this package on [Docs](https://docs.tomatophp.com/plugins/tomato-orders)
 
 ## Changelog
 
