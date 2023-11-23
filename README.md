@@ -9,37 +9,6 @@ full ordering and shipping system management with invoices templates for TomatoP
 ```bash
 composer require tomatophp/tomato-orders
 ```
-after install your package please run this command
-
-```bash
-php artisan tomato-orders:install
-```
-
-## Publish Assets
-
-you can publish config file by use this command
-
-```bash
-php artisan vendor:publish --tag="tomato-orders-config"
-```
-
-you can publish views file by use this command
-
-```bash
-php artisan vendor:publish --tag="tomato-orders-views"
-```
-
-you can publish languages file by use this command
-
-```bash
-php artisan vendor:publish --tag="tomato-orders-lang"
-```
-
-you can publish migrations file by use this command
-
-```bash
-php artisan vendor:publish --tag="tomato-orders-migrations"
-```
 
 ## Support
 
