@@ -4,6 +4,7 @@ namespace TomatoPHP\TomatoOrders\Services\Traits;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use TomatoPHP\TomatoEcommerce\Models\Cart;
 
 trait SyncCart
 {
@@ -26,9 +27,9 @@ trait SyncCart
             ]);
         }
 
-        if(class_exists(TomatoPHP\TomatoEcommerce\Models\Cart::class)){
-            TomatoPHP\TomatoEcommerce\Models\Cart::query()->where('account_id', $account->id)->delete();
-            TomatoPHP\TomatoEcommerce\Models\Cart::query()->where('session_id', session()->getId())->delete();
+        if(class_exists(Cart::class)){
+            Cart::query()->where('account_id', $account->id)->delete();
+            Cart::query()->where('session_id', session()->getId())->delete();
         }
     }
 
