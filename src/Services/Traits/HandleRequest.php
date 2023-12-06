@@ -8,6 +8,11 @@ trait HandleRequest
 {
     private function handleRequest(Request &$request): void
     {
+        $request->validate([
+            "account_id" => "required|array",
+            "items" => "required|array|min:1",
+        ]);
+
         $request->merge([
             "user_id" => auth()->id(),
             "branch_id" => (int)setting('ordering_direct_branch'),

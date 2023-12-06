@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['web','auth', 'splade', 'verified'])->name('admin.')->group(function () {
     Route::get('admin/orders', [\TomatoPHP\TomatoOrders\Http\Controllers\OrderController::class, 'index'])->name('orders.index');
     Route::get('admin/orders/api', [\TomatoPHP\TomatoOrders\Http\Controllers\OrderController::class, 'api'])->name('orders.api');
+    Route::post('admin/orders/fast', [\TomatoPHP\TomatoOrders\Http\Controllers\OrderController::class, 'fast'])->name('orders.fast');
     Route::get('admin/orders/create', [\TomatoPHP\TomatoOrders\Http\Controllers\OrderController::class, 'create'])->name('orders.create');
     Route::post('admin/orders', [\TomatoPHP\TomatoOrders\Http\Controllers\OrderController::class, 'store'])->name('orders.store');
     Route::get('admin/orders/{model}', [\TomatoPHP\TomatoOrders\Http\Controllers\OrderController::class, 'show'])->name('orders.show');

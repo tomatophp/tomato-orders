@@ -55,6 +55,42 @@ class OrderTable extends AbstractTable
                 label: trans('tomato-admin::global.search'),
                 columns: ['id','uuid','name','phone']
             )
+            ->selectFilter(
+                key:'account_id',
+                option_label: "name",
+                option_value: "id",
+                remote_root: "data",
+                remote_url: route('admin.accounts.api')
+            )
+            ->selectFilter(
+                key:'branch_id',
+                option_label: "name",
+                option_value: "id",
+                remote_root: "data",
+                remote_url: route('admin.branches.api')
+            )
+            ->selectFilter(
+                key:'branch_id',
+                option_label: "name",
+                option_value: "id",
+                remote_root: "data",
+                remote_url: route('admin.branches.api')
+            )
+            ->selectFilter(
+                key:'status',
+                options: [
+                    setting('ordering_pending_status') => str(setting('ordering_pending_status'))->ucfirst(),
+                    setting('ordering_prepared_status') => str(setting('ordering_prepared_status'))->ucfirst(),
+                    setting('ordering_withdrew_status') => str(setting('ordering_withdrew_status'))->ucfirst(),
+                    setting('ordering_shipped_status') => str(setting('ordering_shipped_status'))->ucfirst(),
+                    setting('ordering_delivered_status') => str(setting('ordering_delivered_status'))->ucfirst(),
+                    setting('ordering_cancelled_status') => str(setting('ordering_cancelled_status'))->ucfirst(),
+                    setting('ordering_refunded_status') => str(setting('ordering_refunded_status'))->ucfirst(),
+                    setting('ordering_paid_status') => str(setting('ordering_paid_status'))->ucfirst(),
+                ]
+            )
+            ->boolFilter(key: 'is_approved')
+            ->dateFilter()
             ->bulkAction(
                 label: trans('tomato-admin::global.crud.delete'),
                 each: fn (\TomatoPHP\TomatoOrders\Models\Order $model) => $model->delete(),

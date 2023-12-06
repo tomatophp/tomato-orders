@@ -9,6 +9,7 @@ use TomatoPHP\TomatoOrders\Services\Traits\FindOrder;
 use TomatoPHP\TomatoOrders\Services\Traits\GenerateUUID;
 use TomatoPHP\TomatoOrders\Services\Traits\GetShippingPrice;
 use TomatoPHP\TomatoOrders\Services\Traits\HandleRequest;
+use TomatoPHP\TomatoOrders\Services\Traits\InventoryCheck;
 use TomatoPHP\TomatoOrders\Services\Traits\Logger;
 use TomatoPHP\TomatoOrders\Services\Traits\Shipping;
 use TomatoPHP\TomatoOrders\Services\Traits\StatusUpdate;
@@ -27,6 +28,7 @@ class Ordering
     use Logger;
     use HandleRequest;
     use ValidateOrder;
+    use InventoryCheck;
     use SyncCart;
     use SyncItems;
     use SyncMeta;

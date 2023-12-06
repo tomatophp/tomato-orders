@@ -75,6 +75,44 @@
                             </div>
                         @endif
                     </div>
+                    @if(class_exists(\TomatoPHP\TomatoInventory\TomatoInventoryServiceProvider::class))
+                        <div>
+                            <x-splade-select
+                                name="ordering_active_inventory_web_branch"
+                                :label="__('Inventory Web Branch')"
+                                :placeholder="__('Select Branch')"
+                                remote-root="data"
+                                remote-url="{{route('admin.branches.api')}}"
+                                option-value="id"
+                                option-label="name"
+                                choices
+                            />
+                            @if(config('tomato-settings.helpers'))
+                                <div class="p-1">
+                                    <small class="text-red-500"><code>setting('ordering_active_inventory_web_branch')</code></small>
+                                </div>
+                            @endif
+                        </div>
+
+                        <div>
+                            <x-splade-select
+                                name="ordering_active_inventory_direct_branch"
+                                :label="__('Inventory Direct Branch')"
+                                :placeholder="__('Select Branch')"
+                                remote-root="data"
+                                remote-url="{{route('admin.branches.api')}}"
+                                option-value="id"
+                                option-label="name"
+                                choices
+                            />
+                            @if(config('tomato-settings.helpers'))
+                                <div class="p-1">
+                                    <small class="text-red-500"><code>setting('ordering_active_inventory_direct_branch')</code></small>
+                                </div>
+                            @endif
+                        </div>
+
+                    @endif
 
 
                     <div class="flex items-center gap-4">
@@ -86,6 +124,19 @@
         <div>
             <x-tomato-settings-card :title="__('Order Recipe Settings')" :description="__('Change How Recipe looks')">
                 <x-splade-form method="post" action="{{route('admin.orders.settings.update')}}" class="mt-6 space-y-6" :default="$settings">
+                    @if(class_exists(\TomatoPHP\TomatoInventory\TomatoInventoryServiceProvider::class))
+                    <div>
+                        <x-splade-checkbox
+                            name="ordering_active_inventory"
+                            :label="__('Active Inventory')"
+                        />
+                        @if(config('tomato-settings.helpers'))
+                            <div class="p-1">
+                                <small class="text-red-500"><code>setting('ordering_active_inventory')</code></small>
+                            </div>
+                        @endif
+                    </div>
+                    @endif
                     <div>
                         <x-splade-checkbox
                             name="ordering_show_company_data"

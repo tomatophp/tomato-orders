@@ -3,10 +3,15 @@
 namespace TomatoPHP\TomatoOrders\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
+use TomatoPHP\TomatoLocations\Models\Area;
+use TomatoPHP\TomatoLocations\Models\City;
 use TomatoPHP\TomatoOrders\Models\Order;
 use TomatoPHP\TomatoOrders\Models\OrdersItem;
 use TomatoPHP\TomatoOrders\Facades\TomatoOrdering;
@@ -18,6 +23,9 @@ use TomatoPHP\TomatoProducts\Models\Product;
 class OrderController extends Controller
 {
     public string $model;
+    private array $order = [];
+    private Collection $items;
+    private array $errors = [];
 
     public function __construct()
     {
@@ -34,7 +42,15 @@ class OrderController extends Controller
             request: $request,
             model: $this->model,
             view: 'tomato-orders::orders.index',
-            table: \TomatoPHP\TomatoOrders\Tables\OrderTable::class
+            table: \TomatoPHP\TomatoOrders\Tables\OrderTable::class,
+            filters: [
+                "branch_id",
+                "status",
+                "soruce",
+                "name",
+                "phone",
+                "uuid"
+            ]
         );
     }
 
@@ -47,6 +63,14 @@ class OrderController extends Controller
         return Tomato::json(
             request: $request,
             model: \TomatoPHP\TomatoOrders\Models\Order::class,
+            filters: [
+                "branch_id",
+                "status",
+                "soruce",
+                "name",
+                "phone",
+                "uuid"
+            ]
         );
     }
 
@@ -178,17 +202,29 @@ class OrderController extends Controller
             "status" => "required|max:255|string",
         ]);
 
-        TomatoOrdering::setOrder($model)->status($request->get('status'));
+        $status = TomatoOrdering::setOrder($model)->status($request->get('status'));
 
-        Toast::success(__('Order status updated successfully'))->autoDismiss(2);
-        return redirect()->back();
+        if(is_string($status)){
+            Toast::danger($status)->autoDismiss(2);
+            return redirect()->back();
+        }
+        else {
+            Toast::success(__('Order status updated successfully'))->autoDismiss(2);
+            return redirect()->back();
+        }
+
     }
 
     public function approve(Order $model){
-        TomatoOrdering::setOrder($model)->approve();
-
-        Toast::success(__('Order approved successfully'))->autoDismiss(2);
-        return redirect()->back();
+        $checkStatus = TomatoOrdering::setOrder($model)->approve();
+        if(is_string($checkStatus)){
+            Toast::danger($checkStatus)->autoDismiss(2);
+            return redirect()->back();
+        }
+        else {
+            Toast::success(__('Order approved successfully'))->autoDismiss(2);
+            return redirect()->back();
+        }
     }
 
     public function shipping(Order $model)

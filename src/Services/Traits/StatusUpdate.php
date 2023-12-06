@@ -3,16 +3,57 @@
 namespace TomatoPHP\TomatoOrders\Services\Traits;
 
 use Illuminate\Http\Request;
+use TomatoPHP\TomatoInventory\Facades\TomatoInventory;
 use TomatoPHP\TomatoOrders\Models\Order;
+use TomatoPHP\TomatoProducts\Models\Product;
 
 trait StatusUpdate
 {
-    public function status(string $status): void
+    public function status(string $status): string|bool
     {
-        $this->order->status = $status;
-        $this->order->save();
+        if(setting('ordering_active_inventory') && $status === setting('ordering_prepared_status')) {
+            $checkInventory = $this->inventoryAction();
+            if(is_string($checkInventory)){
+                return $checkInventory;
+            }
+            else {
+                $this->order->status = $status;
+                $this->order->save();
 
-        $this->log(__("Status changed to") . " " . $status);
+                $this->log(__("Status changed to") . " " . $status);
+
+                return true;
+            }
+        }
+        else {
+            $this->order->status = $status;
+            $this->order->save();
+
+            $this->log(__("Status changed to") . " " . $status);
+
+            return true;
+        }
+
+
+    }
+
+    public function inventoryAction(): string|bool
+    {
+        $checkInventory = $this->checkInventory($this->order->ordersItems()->get()->map(function ($item){
+            $item->item = Product::find($item->product_id)->toArray();
+            return $item;
+        })->toArray());
+        if($checkInventory === 'success') {
+            TomatoInventory::orderToInventory($this->order);
+
+            return true;
+        }
+        else {
+            $message = __('Product With SKU') .':'. $checkInventory .' ' . __("is out of stock we can not prepare this order");
+            $this->log($message);
+
+            return $message;
+        }
     }
 
     public function pending(): void
@@ -60,13 +101,35 @@ trait StatusUpdate
         $this->status(setting('ordering_paid_status'));
     }
 
-    public function approve(): void
+    public function approve(): bool|string
     {
-        $this->order->is_approved = true;
-        $this->order->save();
+        if(setting('ordering_active_inventory')) {
+            $checkInventory = $this->inventoryAction();
+            if(is_string($checkInventory)){
+                return $checkInventory;
+            }
+            else {
+                $this->order->is_approved = true;
+                $this->order->save();
 
-        $this->log(__("Order Has Been Approved"));
+                $this->log(__("Order Has Been Approved"));
 
-        $this->prepared();
+                $this->prepared();
+
+                return true;
+            }
+
+        }
+        else {
+            $this->order->is_approved = true;
+            $this->order->save();
+
+            $this->log(__("Order Has Been Approved"));
+
+            $this->prepared();
+
+            return true;
+        }
+
     }
 }
