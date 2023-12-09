@@ -239,4 +239,8 @@ class OrderController extends Controller
         Toast::success(__('Order shipped successfully'))->autoDismiss(2);
         return redirect()->back();
     }
+
+    public function print(Order $model){
+        return view('tomato-orders::orders.print', compact('model'));
+    }
 }

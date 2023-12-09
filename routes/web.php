@@ -24,7 +24,6 @@ Route::middleware(['web','auth', 'splade', 'verified'])->name('admin.')->group(f
     Route::post('admin/orders/{model}/approve', [\TomatoPHP\TomatoOrders\Http\Controllers\OrderController::class, 'approve'])->name('orders.approve');
     Route::post('admin/orders/{model}/shipping', [\TomatoPHP\TomatoOrders\Http\Controllers\OrderController::class, 'ship'])->name('orders.ship');
     Route::get('admin/orders/{model}/shipping', [\TomatoPHP\TomatoOrders\Http\Controllers\OrderController::class, 'shipping'])->name('orders.shipping');
-    Route::get('admin/orders/{model}/print', [\TomatoPHP\TomatoOrders\Http\Controllers\OrderController::class, 'print'])->name('orders.print');
     Route::get('admin/orders/{model}/edit', [\TomatoPHP\TomatoOrders\Http\Controllers\OrderController::class, 'edit'])->name('orders.edit');
     Route::post('admin/orders/{model}', [\TomatoPHP\TomatoOrders\Http\Controllers\OrderController::class, 'update'])->name('orders.update');
     Route::delete('admin/orders/{model}', [\TomatoPHP\TomatoOrders\Http\Controllers\OrderController::class, 'destroy'])->name('orders.destroy');
@@ -32,6 +31,10 @@ Route::middleware(['web','auth', 'splade', 'verified'])->name('admin.')->group(f
     Route::post('admin/settings/orders', [\TomatoPHP\TomatoOrders\Http\Controllers\OrderController::class, 'settingsUpdate'])->name('orders.settings.update');
     Route::post('admin/info/user', [\TomatoPHP\TomatoOrders\Http\Controllers\OrderController::class, 'user'])->name('orders.user');
     Route::post('admin/info/product', [\TomatoPHP\TomatoOrders\Http\Controllers\OrderController::class, 'product'])->name('orders.product');
+});
+
+Route::middleware(['web','auth',  'verified'])->name('admin.')->group(function () {
+    Route::get('admin/orders/{model}/print', [\TomatoPHP\TomatoOrders\Http\Controllers\OrderController::class, 'print'])->name('orders.print');
 });
 
 Route::middleware(['web','auth', 'splade', 'verified'])->name('admin.')->group(function () {

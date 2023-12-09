@@ -68,19 +68,12 @@
                                 </x-tomato-admin-button>
                             </x-tomato-admin-tooltip>
                         @endif
-{{--                        @if($item->status === setting('ordering_shipped_status'))--}}
-{{--                            <x-tomato-admin-tooltip text="{{__('Refund')}}">--}}
-{{--                                <x-tomato-admin-button  danger type="icon" :href="route('admin.orders.print', $item->id)">--}}
-{{--                                    <x-heroicon-s-receipt-refund class="h-6 w-6"/>--}}
-{{--                                </x-tomato-admin-button>--}}
-{{--                            </x-tomato-admin-tooltip>--}}
-{{--                        @endif--}}
                         @if($item->status !== setting('ordering_cancelled_status'))
-{{--                            <x-tomato-admin-tooltip text="{{__('Print')}}">--}}
-{{--                                <x-tomato-admin-button type="icon" :href="route('admin.orders.print', $item->id)">--}}
-{{--                                    <x-heroicon-s-printer class="h-6 w-6"/>--}}
-{{--                                </x-tomato-admin-button>--}}
-{{--                            </x-tomato-admin-tooltip>--}}
+                            <x-tomato-admin-tooltip text="{{__('Print')}}">
+                                <a href="{{route('admin.orders.print', $item->id)}}" target="_blank" class="px-2 text-primary-500">
+                                    <x-heroicon-s-printer class="h-6 w-6"/>
+                                </a>
+                            </x-tomato-admin-tooltip>
                             <x-tomato-admin-tooltip text="{{trans('tomato-admin::global.crud.view')}}">
                                 <x-tomato-admin-button success type="icon" :href="route('admin.orders.show', $item->id)">
                                     <x-heroicon-s-eye class="h-6 w-6"/>
