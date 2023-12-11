@@ -6,14 +6,14 @@
         <x-tomato-admin-button :href="route('admin.orders.create')" type="link">
             {{trans('tomato-admin::global.crud.create-new')}} {{__('Order')}}
         </x-tomato-admin-button>
-        <x-tomato-admin-button :href="route('admin.orders.settings')" type="link">
-            {{__('Settings')}}
-        </x-tomato-admin-button>
     </x-slot:buttons>
 
     <div class="pb-12">
         <div class="mx-auto">
             <x-splade-table :for="$table" striped>
+                <x-slot:actions>
+                    <x-tomato-admin-table-action secondary :href="route('admin.orders.settings')" modal label="{{__('Order Settings')}}" icon="bx bxs-cog" />
+                </x-slot:actions>
                 <x-splade-cell account.name>
                     <x-tomato-admin-row table type="badge" href="{{route('admin.accounts.show', $item->account?->id)}}" :value="$item->account?->name" />
                 </x-splade-cell>

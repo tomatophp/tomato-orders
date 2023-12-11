@@ -15,7 +15,9 @@ class OrderTable extends AbstractTable
      *
      * @return void
      */
-    public function __construct(public mixed $query=null)
+    public function __construct(
+        public mixed $query=null
+    )
     {
         if(!$this->query){
             $this->query = \TomatoPHP\TomatoOrders\Models\Order::query();

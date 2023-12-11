@@ -3,6 +3,9 @@
 namespace Tomatophp\TomatoOrders;
 
 use Illuminate\Support\ServiceProvider;
+use TomatoPHP\TomatoCrm\Facades\TomatoCrm;
+use TomatoPHP\TomatoCrm\Services\Contracts\AccountReleation;
+use TomatoPHP\TomatoOrders\Tables\OrderTable;
 use TomatoPHP\TomatoOrders\View\Components\Items;
 use TomatoPHP\TomatoOrders\View\Components\Search;
 use TomatoPHP\TomatoAdmin\Facade\TomatoMenu;
@@ -98,5 +101,18 @@ class TomatoOrdersServiceProvider extends ServiceProvider
         $this->app->bind('tomato-ordering', function () {
             return new \TomatoPHP\TomatoOrders\Services\Ordering();
         });
+
+
+        TomatoCrm::registerAccountReleation(
+            AccountReleation::make('orders')
+                ->label([
+                    "ar" => "الطلبات",
+                    "en" => "Orders"
+                ])
+                ->table(OrderTable::class)
+                ->view('tomato-orders::orders.table')
+                ->path('orders')
+                ->toArray()
+        );
     }
 }
