@@ -2,7 +2,7 @@
 
 use Spatie\LaravelSettings\Migrations\SettingsMigration;
 
-class OrderingSettings extends SettingsMigration
+class UpdateOrderingSettings extends SettingsMigration
 {
     public function up(): void
     {
