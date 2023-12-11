@@ -3,6 +3,7 @@
 namespace Tomatophp\TomatoOrders;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use TomatoPHP\TomatoAdmin\Facade\TomatoSlot;
@@ -121,73 +122,75 @@ class TomatoOrdersServiceProvider extends ServiceProvider
                 ->toArray()
         );
 
-        $filterBy = [];
-        if(request()->has('filterBy') && request()->get('filterBy') === 'today'){
-            $filterBy = [
-                Carbon::now()->startOfDay(),
-                Carbon::now()->endOfDay()
-            ];
+        if(Schema::hasTable('orders')){
+            $filterBy = [];
+            if(request()->has('filterBy') && request()->get('filterBy') === 'today'){
+                $filterBy = [
+                    Carbon::now()->startOfDay(),
+                    Carbon::now()->endOfDay()
+                ];
+            }
+            elseif(request()->has('filterBy') && request()->get('filterBy') === 'week'){
+                $filterBy = [
+                    Carbon::now()->startOfWeek(),
+                    Carbon::now()->endOfWeek()
+                ];
+            }
+            elseif(request()->has('filterBy') && request()->get('filterBy') === 'month'){
+                $filterBy = [
+                    Carbon::now()->startOfMonth(),
+                    Carbon::now()->endOfMonth()
+                ];
+            }
+            elseif(request()->has('filterBy') && request()->get('filterBy') === 'year'){
+                $filterBy = [
+                    Carbon::now()->startOfYear(),
+                    Carbon::now()->endOfYear()
+                ];
+            }
+            else {
+                $filterBy = [
+                    Carbon::now()->startOfWeek(),
+                    Carbon::now()->endOfWeek()
+                ];
+            }
+
+
+            $totalOrders = Order::query()->whereBetween('created_at',$filterBy)->count();
+
+            $canceledOrders = Order::query()->whereBetween('created_at',$filterBy)
+                ->where('status', setting('ordering_cancelled_status'))
+                ->count();
+
+            $shippedOrdres = Order::query()->whereBetween('created_at',$filterBy)
+                ->where('status', setting('ordering_shipped_status'))
+                ->count();
+
+            $sumPaidOrders = number_format(
+                    Order::query()->whereBetween('created_at',$filterBy)
+                        ->where('status', setting('ordering_paid_status'))
+                        ->sum('total'), 2). setting('local_currency');
+
+            TomatoWidget::register([
+                Widget::make()
+                    ->title(__('Total Orders This') . ' ' . Str::title(request()->get('filterBy') ?? 'Week'))
+                    ->icon('bx bxs-rocket')
+                    ->counter($totalOrders),
+                Widget::make()
+                    ->title(__('Canceled Orders This') . ' ' . Str::title(request()->get('filterBy') ?? 'Week'))
+                    ->icon('bx bx-x')
+                    ->counter($canceledOrders),
+                Widget::make()
+                    ->title(__('Shipped Orders This') . ' ' . Str::title(request()->get('filterBy') ?? 'Week'))
+                    ->icon('bx bxs-truck')
+                    ->counter($shippedOrdres),
+                Widget::make()
+                    ->title(__('Paid Orders This') . ' ' . Str::title(request()->get('filterBy') ?? 'Week'))
+                    ->icon('bx bx-money')
+                    ->counter($sumPaidOrders)
+            ]);
+
+            TomatoSlot::dashboardTop('tomato-orders::orders.filter');
         }
-        elseif(request()->has('filterBy') && request()->get('filterBy') === 'week'){
-            $filterBy = [
-                Carbon::now()->startOfWeek(),
-                Carbon::now()->endOfWeek()
-            ];
-        }
-        elseif(request()->has('filterBy') && request()->get('filterBy') === 'month'){
-            $filterBy = [
-                Carbon::now()->startOfMonth(),
-                Carbon::now()->endOfMonth()
-            ];
-        }
-        elseif(request()->has('filterBy') && request()->get('filterBy') === 'year'){
-            $filterBy = [
-                Carbon::now()->startOfYear(),
-                Carbon::now()->endOfYear()
-            ];
-        }
-        else {
-            $filterBy = [
-                Carbon::now()->startOfWeek(),
-                Carbon::now()->endOfWeek()
-            ];
-        }
-
-
-        $totalOrders = Order::query()->whereBetween('created_at',$filterBy)->count();
-
-        $canceledOrders = Order::query()->whereBetween('created_at',$filterBy)
-            ->where('status', setting('ordering_cancelled_status'))
-            ->count();
-
-        $shippedOrdres = Order::query()->whereBetween('created_at',$filterBy)
-            ->where('status', setting('ordering_shipped_status'))
-            ->count();
-
-        $sumPaidOrders = number_format(
-                Order::query()->whereBetween('created_at',$filterBy)
-                    ->where('status', setting('ordering_paid_status'))
-                    ->sum('total'), 2). setting('local_currency');
-
-        TomatoWidget::register([
-            Widget::make()
-                ->title(__('Total Orders This') . ' ' . Str::title(request()->get('filterBy') ?? 'Week'))
-                ->icon('bx bxs-rocket')
-                ->counter($totalOrders),
-            Widget::make()
-                ->title(__('Canceled Orders This') . ' ' . Str::title(request()->get('filterBy') ?? 'Week'))
-                ->icon('bx bx-x')
-                ->counter($canceledOrders),
-            Widget::make()
-                ->title(__('Shipped Orders This') . ' ' . Str::title(request()->get('filterBy') ?? 'Week'))
-                ->icon('bx bxs-truck')
-                ->counter($shippedOrdres),
-           Widget::make()
-                ->title(__('Paid Orders This') . ' ' . Str::title(request()->get('filterBy') ?? 'Week'))
-                ->icon('bx bx-money')
-                ->counter($sumPaidOrders)
-        ]);
-
-        TomatoSlot::dashboardTop('tomato-orders::orders.filter');
     }
 }
