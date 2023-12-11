@@ -28,7 +28,10 @@ class BranchController extends Controller
             request: $request,
             model: $this->model,
             view: 'tomato-orders::branches.index',
-            table: \TomatoPHP\TomatoOrders\Tables\BranchTable::class
+            table: \TomatoPHP\TomatoOrders\Tables\BranchTable::class,
+            filters: [
+                'company_id'
+            ]
         );
     }
 
@@ -41,6 +44,9 @@ class BranchController extends Controller
         return Tomato::json(
             request: $request,
             model: \TomatoPHP\TomatoOrders\Models\Branch::class,
+            filters: [
+                'company_id'
+            ]
         );
     }
 

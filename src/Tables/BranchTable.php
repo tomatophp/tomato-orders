@@ -7,6 +7,7 @@ use ProtoneMedia\Splade\AbstractTable;
 use ProtoneMedia\Splade\Facades\Toast;
 use ProtoneMedia\Splade\SpladeTable;
 use Illuminate\Database\Eloquent\Builder;
+use TomatoPHP\TomatoRoles\Services\TomatoRoles;
 
 class BranchTable extends AbstractTable
 {
@@ -15,9 +16,11 @@ class BranchTable extends AbstractTable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(public mixed $query)
     {
-
+        if(!$this->query){
+            $this->query = \TomatoPHP\TomatoOrders\Models\Branch::query();
+        }
     }
 
     /**
@@ -27,7 +30,12 @@ class BranchTable extends AbstractTable
      */
     public function authorize(Request $request)
     {
-        return true;
+        if(auth('web')->user() && class_exists(TomatoRoles::class)){
+            return auth('web')->user()->can('admin.branches.index');
+        }
+        else {
+            return true;
+        }
     }
 
     /**
@@ -37,7 +45,7 @@ class BranchTable extends AbstractTable
      */
     public function for()
     {
-        return \TomatoPHP\TomatoOrders\Models\Branch::query();
+        return $this->query;
     }
 
     /**
@@ -53,12 +61,7 @@ class BranchTable extends AbstractTable
                 label: trans('tomato-admin::global.search'),
                 columns: ['id','name','phone',]
             )
-            ->bulkAction(
-                label: trans('tomato-admin::global.crud.delete'),
-                each: fn (\TomatoPHP\TomatoOrders\Models\Branch $model) => $model->delete(),
-                after: fn () => Toast::danger(__('Branch Has Been Deleted'))->autoDismiss(2),
-                confirm: true
-            )
+
             ->defaultSort('id', 'desc')
             ->column(
                 key: 'id',
@@ -82,7 +85,31 @@ class BranchTable extends AbstractTable
                 sortable: true
             )
             ->column(key: 'actions',label: trans('tomato-admin::global.crud.actions'))
-            ->export()
             ->paginate(10);
+
+
+
+        if(auth('web')->user() && class_exists(TomatoRoles::class)){
+            if(auth('web')->user()->can('admin.branches.export')){
+                $table->export();
+            }
+            if(auth('web')->user()->can('admin.branches.destroy')){
+                $table->bulkAction(
+                    label: trans('tomato-admin::global.crud.delete'),
+                    each: fn (\TomatoPHP\TomatoOrders\Models\Branch $model) => $model->delete(),
+                    after: fn () => Toast::danger(__('Branch Has Been Deleted'))->autoDismiss(2),
+                    confirm: true
+                );
+            }
+        }
+        else {
+            $table->bulkAction(
+                label: trans('tomato-admin::global.crud.delete'),
+                each: fn (\TomatoPHP\TomatoOrders\Models\Branch $model) => $model->delete(),
+                after: fn () => Toast::danger(__('Branch Has Been Deleted'))->autoDismiss(2),
+                confirm: true
+            );
+            $table->export();
+        }
     }
 }

@@ -7,6 +7,7 @@ use ProtoneMedia\Splade\AbstractTable;
 use ProtoneMedia\Splade\Facades\Toast;
 use ProtoneMedia\Splade\SpladeTable;
 use Illuminate\Database\Eloquent\Builder;
+use TomatoPHP\TomatoRoles\Services\TomatoRoles;
 
 class ShippingPriceTable extends AbstractTable
 {
@@ -29,7 +30,12 @@ class ShippingPriceTable extends AbstractTable
      */
     public function authorize(Request $request)
     {
-        return true;
+        if(auth('web')->user() && class_exists(TomatoRoles::class)){
+            return auth('web')->user()->can('admin.shipping-prices.index');
+        }
+        else {
+            return true;
+        }
     }
 
     /**
@@ -54,12 +60,6 @@ class ShippingPriceTable extends AbstractTable
             ->withGlobalSearch(
                 label: trans('tomato-admin::global.search'),
                 columns: ['id',]
-            )
-            ->bulkAction(
-                label: trans('tomato-admin::global.crud.delete'),
-                each: fn (\TomatoPHP\TomatoOrders\Models\ShippingPrice $model) => $model->delete(),
-                after: fn () => Toast::danger(__('ShippingPrice Has Been Deleted'))->autoDismiss(2),
-                confirm: true
             )
             ->defaultSort('id', 'desc')
             ->column(
@@ -98,7 +98,30 @@ class ShippingPriceTable extends AbstractTable
                 sortable: true
             )
             ->column(key: 'actions',label: trans('tomato-admin::global.crud.actions'))
-            ->export()
             ->paginate(10);
+
+
+        if(auth('web')->user() && class_exists(TomatoRoles::class)){
+            if(auth('web')->user()->can('admin.shipping-prices.export')){
+                $table->export();
+            }
+            if(auth('web')->user()->can('admin.shipping-prices.destroy')){
+                $table->bulkAction(
+                    label: trans('tomato-admin::global.crud.delete'),
+                    each: fn (\TomatoPHP\TomatoOrders\Models\ShippingPrice $model) => $model->delete(),
+                    after: fn () => Toast::danger(__('ShippingPrice Has Been Deleted'))->autoDismiss(2),
+                    confirm: true
+                );
+            }
+        }
+        else {
+            $table->bulkAction(
+                label: trans('tomato-admin::global.crud.delete'),
+                each: fn (\TomatoPHP\TomatoOrders\Models\ShippingPrice $model) => $model->delete(),
+                after: fn () => Toast::danger(__('ShippingPrice Has Been Deleted'))->autoDismiss(2),
+                confirm: true
+            );
+            $table->export();
+        }
     }
 }

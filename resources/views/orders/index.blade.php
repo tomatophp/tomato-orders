@@ -67,11 +67,13 @@
                             </x-tomato-admin-tooltip>
                         @endif
                         @if($item->status !== setting('ordering_cancelled_status'))
-                            <x-tomato-admin-tooltip text="{{__('Print')}}">
-                                <a href="{{route('admin.orders.print', $item->id)}}" target="_blank" class="px-2 text-primary-500">
-                                    <x-heroicon-s-printer class="h-6 w-6"/>
-                                </a>
-                            </x-tomato-admin-tooltip>
+                            @can('admin.orders.print')
+                                <x-tomato-admin-tooltip text="{{__('Print')}}">
+                                    <a href="{{route('admin.orders.print', $item->id)}}" target="_blank" class="px-2 text-primary-500">
+                                        <x-heroicon-s-printer class="h-6 w-6"/>
+                                    </a>
+                                </x-tomato-admin-tooltip>
+                            @endcan
                             <x-tomato-admin-tooltip text="{{trans('tomato-admin::global.crud.view')}}">
                                 <x-tomato-admin-button success type="icon" :href="route('admin.orders.show', $item->id)">
                                     <x-heroicon-s-eye class="h-6 w-6"/>

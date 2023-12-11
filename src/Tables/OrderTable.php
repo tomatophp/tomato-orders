@@ -7,6 +7,7 @@ use ProtoneMedia\Splade\AbstractTable;
 use ProtoneMedia\Splade\Facades\Toast;
 use ProtoneMedia\Splade\SpladeTable;
 use Illuminate\Database\Eloquent\Builder;
+use TomatoPHP\TomatoRoles\Services\TomatoRoles;
 
 class OrderTable extends AbstractTable
 {
@@ -31,7 +32,12 @@ class OrderTable extends AbstractTable
      */
     public function authorize(Request $request)
     {
-        return true;
+        if(auth('web')->user() && class_exists(TomatoRoles::class)){
+            return auth('web')->user()->can('admin.orders.index');
+        }
+        else {
+            return true;
+        }
     }
 
     /**
@@ -93,12 +99,6 @@ class OrderTable extends AbstractTable
             )
             ->boolFilter(key: 'is_approved')
             ->dateFilter()
-            ->bulkAction(
-                label: trans('tomato-admin::global.crud.delete'),
-                each: fn (\TomatoPHP\TomatoOrders\Models\Order $model) => $model->delete(),
-                after: fn () => Toast::danger(__('Order Has Been Deleted'))->autoDismiss(2),
-                confirm: true
-            )
             ->defaultSort('id', 'desc')
             ->column(key: 'actions',label: trans('tomato-admin::global.crud.actions'))
             ->column(
@@ -142,7 +142,30 @@ class OrderTable extends AbstractTable
                 label: __('Created At'),
                 sortable: true
             )
-            ->export()
             ->paginate(10);
+
+
+        if(auth('web')->user() && class_exists(TomatoRoles::class)){
+            if(auth('web')->user()->can('admin.orders.export')){
+                $table->export();
+            }
+            if(auth('web')->user()->can('admin.orders.destroy')){
+                $table->bulkAction(
+                    label: trans('tomato-admin::global.crud.delete'),
+                    each: fn (\TomatoPHP\TomatoOrders\Models\Order $model) => $model->delete(),
+                    after: fn () => Toast::danger(__('Order Has Been Deleted'))->autoDismiss(2),
+                    confirm: true
+                );
+            }
+        }
+        else {
+            $table->bulkAction(
+                label: trans('tomato-admin::global.crud.delete'),
+                each: fn (\TomatoPHP\TomatoOrders\Models\Order $model) => $model->delete(),
+                after: fn () => Toast::danger(__('Order Has Been Deleted'))->autoDismiss(2),
+                confirm: true
+            );
+            $table->export();
+        }
     }
 }

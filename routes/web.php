@@ -37,27 +37,6 @@ Route::middleware(['web','auth',  'verified'])->name('admin.')->group(function (
     Route::get('admin/orders/{model}/print', [\TomatoPHP\TomatoOrders\Http\Controllers\OrderController::class, 'print'])->name('orders.print');
 });
 
-Route::middleware(['web','auth', 'splade', 'verified'])->name('admin.')->group(function () {
-    Route::get('admin/orders-items', [\TomatoPHP\TomatoOrders\Http\Controllers\OrdersItemController::class, 'index'])->name('orders-items.index');
-    Route::get('admin/orders-items/api', [\TomatoPHP\TomatoOrders\Http\Controllers\OrdersItemController::class, 'api'])->name('orders-items.api');
-    Route::get('admin/orders-items/create', [\TomatoPHP\TomatoOrders\Http\Controllers\OrdersItemController::class, 'create'])->name('orders-items.create');
-    Route::post('admin/orders-items', [\TomatoPHP\TomatoOrders\Http\Controllers\OrdersItemController::class, 'store'])->name('orders-items.store');
-    Route::get('admin/orders-items/{model}', [\TomatoPHP\TomatoOrders\Http\Controllers\OrdersItemController::class, 'show'])->name('orders-items.show');
-    Route::get('admin/orders-items/{model}/edit', [\TomatoPHP\TomatoOrders\Http\Controllers\OrdersItemController::class, 'edit'])->name('orders-items.edit');
-    Route::post('admin/orders-items/{model}', [\TomatoPHP\TomatoOrders\Http\Controllers\OrdersItemController::class, 'update'])->name('orders-items.update');
-    Route::delete('admin/orders-items/{model}', [\TomatoPHP\TomatoOrders\Http\Controllers\OrdersItemController::class, 'destroy'])->name('orders-items.destroy');
-});
-
-Route::middleware(['web','auth', 'splade', 'verified'])->name('admin.')->group(function () {
-    Route::get('admin/order-logs', [\TomatoPHP\TomatoOrders\Http\Controllers\OrderLogController::class, 'index'])->name('order-logs.index');
-    Route::get('admin/order-logs/api', [\TomatoPHP\TomatoOrders\Http\Controllers\OrderLogController::class, 'api'])->name('order-logs.api');
-    Route::get('admin/order-logs/create', [\TomatoPHP\TomatoOrders\Http\Controllers\OrderLogController::class, 'create'])->name('order-logs.create');
-    Route::post('admin/order-logs', [\TomatoPHP\TomatoOrders\Http\Controllers\OrderLogController::class, 'store'])->name('order-logs.store');
-    Route::get('admin/order-logs/{model}', [\TomatoPHP\TomatoOrders\Http\Controllers\OrderLogController::class, 'show'])->name('order-logs.show');
-    Route::get('admin/order-logs/{model}/edit', [\TomatoPHP\TomatoOrders\Http\Controllers\OrderLogController::class, 'edit'])->name('order-logs.edit');
-    Route::post('admin/order-logs/{model}', [\TomatoPHP\TomatoOrders\Http\Controllers\OrderLogController::class, 'update'])->name('order-logs.update');
-    Route::delete('admin/order-logs/{model}', [\TomatoPHP\TomatoOrders\Http\Controllers\OrderLogController::class, 'destroy'])->name('order-logs.destroy');
-});
 
 Route::middleware(['web','auth', 'splade', 'verified'])->name('admin.')->group(function () {
     Route::get('admin/branches', [\TomatoPHP\TomatoOrders\Http\Controllers\BranchController::class, 'index'])->name('branches.index');
