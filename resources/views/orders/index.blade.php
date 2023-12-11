@@ -42,9 +42,7 @@
                             @if($item->status === setting('ordering_withdrew_status'))
                                 <option value="{{setting('ordering_withdrew_status')}}">{{str(setting('ordering_withdrew_status'))->ucfirst()}}</option>
                             @endif
-                            @if($item->status === setting('ordering_shipped_status'))
-                                <option value="{{setting('ordering_shipped_status')}}">{{str(setting('ordering_shipped_status'))->ucfirst()}}</option>
-                            @endif
+                            <option value="{{setting('ordering_shipped_status')}}">{{str(setting('ordering_shipped_status'))->ucfirst()}}</option>
                             <option value="{{setting('ordering_delivered_status')}}">{{str(setting('ordering_delivered_status'))->ucfirst()}}</option>
                             <option value="{{setting('ordering_cancelled_status')}}">{{str(setting('ordering_cancelled_status'))->ucfirst()}}</option>
                             <option value="{{setting('ordering_refunded_status')}}">{{str(setting('ordering_refunded_status'))->ucfirst()}}</option>

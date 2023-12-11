@@ -2,9 +2,15 @@
 
 namespace Tomatophp\TomatoOrders;
 
+use Carbon\Carbon;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
+use TomatoPHP\TomatoAdmin\Facade\TomatoSlot;
+use TomatoPHP\TomatoAdmin\Facade\TomatoWidget;
+use TomatoPHP\TomatoAdmin\Services\Contracts\Widget;
 use TomatoPHP\TomatoCrm\Facades\TomatoCrm;
 use TomatoPHP\TomatoCrm\Services\Contracts\AccountReleation;
+use TomatoPHP\TomatoOrders\Models\Order;
 use TomatoPHP\TomatoOrders\Tables\OrderTable;
 use TomatoPHP\TomatoOrders\View\Components\Items;
 use TomatoPHP\TomatoOrders\View\Components\Search;
@@ -64,7 +70,7 @@ class TomatoOrdersServiceProvider extends ServiceProvider
             Menu::make()
                 ->group(__('Ordering'))
                 ->label(__('Orders'))
-                ->icon('bx bx-rocket')
+                ->icon('bx bxs-rocket')
                 ->route('admin.orders.index'),
             Menu::make()
                 ->group(__('Ordering'))
@@ -74,7 +80,7 @@ class TomatoOrdersServiceProvider extends ServiceProvider
             Menu::make()
                 ->group(__('Ordering'))
                 ->label(__('Branches'))
-                ->icon('bx bx-home-smile')
+                ->icon('bx bxs-home-smile')
                 ->route('admin.branches.index'),
             Menu::make()
                 ->group(__('Shipping'))
@@ -84,7 +90,7 @@ class TomatoOrdersServiceProvider extends ServiceProvider
             Menu::make()
                 ->group(__('Shipping'))
                 ->label(__('Delivery'))
-                ->icon('bx bx-car')
+                ->icon('bx bxs-car')
                 ->route('admin.deliveries.index'),
             Menu::make()
                 ->group(__('Shipping'))
@@ -114,5 +120,74 @@ class TomatoOrdersServiceProvider extends ServiceProvider
                 ->path('orders')
                 ->toArray()
         );
+
+        $filterBy = [];
+        if(request()->has('filterBy') && request()->get('filterBy') === 'today'){
+            $filterBy = [
+                Carbon::now()->startOfDay(),
+                Carbon::now()->endOfDay()
+            ];
+        }
+        elseif(request()->has('filterBy') && request()->get('filterBy') === 'week'){
+            $filterBy = [
+                Carbon::now()->startOfWeek(),
+                Carbon::now()->endOfWeek()
+            ];
+        }
+        elseif(request()->has('filterBy') && request()->get('filterBy') === 'month'){
+            $filterBy = [
+                Carbon::now()->startOfMonth(),
+                Carbon::now()->endOfMonth()
+            ];
+        }
+        elseif(request()->has('filterBy') && request()->get('filterBy') === 'year'){
+            $filterBy = [
+                Carbon::now()->startOfYear(),
+                Carbon::now()->endOfYear()
+            ];
+        }
+        else {
+            $filterBy = [
+                Carbon::now()->startOfWeek(),
+                Carbon::now()->endOfWeek()
+            ];
+        }
+
+
+        $totalOrders = Order::query()->whereBetween('created_at',$filterBy)->count();
+
+        $canceledOrders = Order::query()->whereBetween('created_at',$filterBy)
+            ->where('status', setting('ordering_cancelled_status'))
+            ->count();
+
+        $shippedOrdres = Order::query()->whereBetween('created_at',$filterBy)
+            ->where('status', setting('ordering_shipped_status'))
+            ->count();
+
+        $sumPaidOrders = number_format(
+                Order::query()->whereBetween('created_at',$filterBy)
+                    ->where('status', setting('ordering_paid_status'))
+                    ->sum('total'), 2). setting('local_currency');
+
+        TomatoWidget::register([
+            Widget::make()
+                ->title(__('Total Orders This') . ' ' . Str::title(request()->get('filterBy') ?? 'Week'))
+                ->icon('bx bxs-rocket')
+                ->counter($totalOrders),
+            Widget::make()
+                ->title(__('Canceled Orders This') . ' ' . Str::title(request()->get('filterBy') ?? 'Week'))
+                ->icon('bx bx-x')
+                ->counter($canceledOrders),
+            Widget::make()
+                ->title(__('Shipped Orders This') . ' ' . Str::title(request()->get('filterBy') ?? 'Week'))
+                ->icon('bx bxs-truck')
+                ->counter($shippedOrdres),
+           Widget::make()
+                ->title(__('Paid Orders This') . ' ' . Str::title(request()->get('filterBy') ?? 'Week'))
+                ->icon('bx bx-money')
+                ->counter($sumPaidOrders)
+        ]);
+
+        TomatoSlot::dashboardTop('tomato-orders::orders.filter');
     }
 }
