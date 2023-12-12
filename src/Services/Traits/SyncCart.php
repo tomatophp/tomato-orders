@@ -4,6 +4,7 @@ namespace TomatoPHP\TomatoOrders\Services\Traits;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 use TomatoPHP\TomatoEcommerce\Models\Cart;
 
 trait SyncCart
@@ -28,8 +29,7 @@ trait SyncCart
         }
 
         if(class_exists(Cart::class)){
-            Cart::query()->where('account_id', $account->id)->delete();
-            Cart::query()->where('session_id', session()->getId())->delete();
+            Cart::query()->where('session_id', Cookie::get('cart'))->delete();
         }
     }
 

@@ -3,6 +3,7 @@
 namespace TomatoPHP\TomatoOrders\Services\Traits;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 use TomatoPHP\TomatoEcommerce\Models\Cart;
 use TomatoPHP\TomatoOrders\Models\Order;
 use TomatoPHP\TomatoOrders\Models\ShippingPrice;
@@ -22,7 +23,7 @@ trait StoreWebOrder
 
         $account = auth('accounts')->user();
 
-        $carts = Cart::query()->where('account_id', $account->id)->get();
+        $carts = Cart::query()->where('session_id', Cookie::get('cart'))->get();
         $this->setCart($carts);
 
         $shipping = $this->getShippingPrice($request);
