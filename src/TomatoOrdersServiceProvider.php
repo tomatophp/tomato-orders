@@ -100,11 +100,6 @@ class TomatoOrdersServiceProvider extends ServiceProvider
                 ->route('admin.shipping-prices.index')
         ]);
 
-        $this->loadViewComponentsAs('tomato', [
-            Search::class,
-            Items::class
-        ]);
-
         $this->app->bind('tomato-ordering', function () {
             return new \TomatoPHP\TomatoOrders\Services\Ordering();
         });
