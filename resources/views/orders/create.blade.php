@@ -15,7 +15,7 @@
             ]
         ]
     ]'>
-        @php $company = \TomatoPHP\TomatoOrders\Models\Branch::find(setting('ordering_direct_branch'))?->company @endphp
+        @php $company = \TomatoPHP\TomatoBranches\Models\Branch::find(setting('ordering_direct_branch'))?->company @endphp
         <div class="flex justify-between xl:gap-60 lg:gap-48 md:gap-16 sm:gap-8 sm:flex-row flex-col gap-4">
             <div class="w-full">
                 <div class="my-4">

@@ -4,6 +4,7 @@ namespace TomatoPHP\TomatoOrders\Models;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use TomatoPHP\TomatoBranches\Models\Branch;
 use TomatoPHP\TomatoCoupons\Models\Coupon;
 use TomatoPHP\TomatoCrm\Models\Location;
 use TomatoPHP\TomatoLocations\Models\Area;
@@ -142,7 +143,7 @@ class Order extends Model
      */
     public function branch()
     {
-        return $this->belongsTo('TomatoPHP\TomatoOrders\Models\Branch');
+        return $this->belongsTo(Branch::class);
     }
 
     /**

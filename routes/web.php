@@ -38,16 +38,6 @@ Route::middleware(['web','auth',  'verified'])->name('admin.')->group(function (
 });
 
 
-Route::middleware(['web','auth', 'splade', 'verified'])->name('admin.')->group(function () {
-    Route::get('admin/branches', [\TomatoPHP\TomatoOrders\Http\Controllers\BranchController::class, 'index'])->name('branches.index');
-    Route::get('admin/branches/api', [\TomatoPHP\TomatoOrders\Http\Controllers\BranchController::class, 'api'])->name('branches.api');
-    Route::get('admin/branches/create', [\TomatoPHP\TomatoOrders\Http\Controllers\BranchController::class, 'create'])->name('branches.create');
-    Route::post('admin/branches', [\TomatoPHP\TomatoOrders\Http\Controllers\BranchController::class, 'store'])->name('branches.store');
-    Route::get('admin/branches/{model}', [\TomatoPHP\TomatoOrders\Http\Controllers\BranchController::class, 'show'])->name('branches.show');
-    Route::get('admin/branches/{model}/edit', [\TomatoPHP\TomatoOrders\Http\Controllers\BranchController::class, 'edit'])->name('branches.edit');
-    Route::post('admin/branches/{model}', [\TomatoPHP\TomatoOrders\Http\Controllers\BranchController::class, 'update'])->name('branches.update');
-    Route::delete('admin/branches/{model}', [\TomatoPHP\TomatoOrders\Http\Controllers\BranchController::class, 'destroy'])->name('branches.destroy');
-});
 
 Route::middleware(['web','auth', 'splade', 'verified'])->name('admin.')->group(function () {
     Route::get('admin/deliveries', [\TomatoPHP\TomatoOrders\Http\Controllers\DeliveryController::class, 'index'])->name('deliveries.index');
@@ -82,13 +72,3 @@ Route::middleware(['web','auth', 'splade', 'verified'])->name('admin.')->group(f
     Route::delete('admin/shipping-prices/{model}', [\TomatoPHP\TomatoOrders\Http\Controllers\ShippingPriceController::class, 'destroy'])->name('shipping-prices.destroy');
 });
 
-Route::middleware(['web','auth', 'splade', 'verified'])->name('admin.')->group(function () {
-    Route::get('admin/companies', [\TomatoPHP\TomatoOrders\Http\Controllers\CompanyController::class, 'index'])->name('companies.index');
-    Route::get('admin/companies/api', [\TomatoPHP\TomatoOrders\Http\Controllers\CompanyController::class, 'api'])->name('companies.api');
-    Route::get('admin/companies/create', [\TomatoPHP\TomatoOrders\Http\Controllers\CompanyController::class, 'create'])->name('companies.create');
-    Route::post('admin/companies', [\TomatoPHP\TomatoOrders\Http\Controllers\CompanyController::class, 'store'])->name('companies.store');
-    Route::get('admin/companies/{model}', [\TomatoPHP\TomatoOrders\Http\Controllers\CompanyController::class, 'show'])->name('companies.show');
-    Route::get('admin/companies/{model}/edit', [\TomatoPHP\TomatoOrders\Http\Controllers\CompanyController::class, 'edit'])->name('companies.edit');
-    Route::post('admin/companies/{model}', [\TomatoPHP\TomatoOrders\Http\Controllers\CompanyController::class, 'update'])->name('companies.update');
-    Route::delete('admin/companies/{model}', [\TomatoPHP\TomatoOrders\Http\Controllers\CompanyController::class, 'destroy'])->name('companies.destroy');
-});

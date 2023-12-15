@@ -75,26 +75,16 @@ class TomatoOrdersServiceProvider extends ServiceProvider
                 ->route('admin.orders.index'),
             Menu::make()
                 ->group(__('Ordering'))
-                ->label(__('Companies'))
-                ->icon('bx bxs-building')
-                ->route('admin.companies.index'),
-            Menu::make()
-                ->group(__('Ordering'))
-                ->label(__('Branches'))
-                ->icon('bx bxs-home-smile')
-                ->route('admin.branches.index'),
-            Menu::make()
-                ->group(__('Shipping'))
                 ->label(__('Vendors'))
                 ->icon('bx bxs-truck')
                 ->route('admin.shipping-vendors.index'),
             Menu::make()
-                ->group(__('Shipping'))
+                ->group(__('Ordering'))
                 ->label(__('Delivery'))
                 ->icon('bx bxs-car')
                 ->route('admin.deliveries.index'),
             Menu::make()
-                ->group(__('Shipping'))
+                ->group(__('Ordering'))
                 ->label(__('Prices'))
                 ->icon('bx bx-money')
                 ->route('admin.shipping-prices.index')
