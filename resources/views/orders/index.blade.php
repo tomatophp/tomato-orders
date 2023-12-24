@@ -26,27 +26,16 @@
                 <x-splade-cell total>
                     {!! dollar($item->total) !!}
                 </x-splade-cell>
-                <x-splade-cell status>
+                <x-splade-cell status use="$statues">
                     <x-splade-form class="w-64" method="POST" action="{{route('admin.orders.status', $item->id)}}" :default="$item" submit-on-change>
                         <x-splade-select :disabled="
-                            $item->status === setting('ordering_cancelled_status') ||
-                            $item->status === setting('ordering_paid_status')"
-
+                            $item->status === $statues->where('name', 'ordering_cancelled_status')->first()?->payload ||
+                            $item->status === $statues->where('name', 'ordering_paid_status')->first()?->payload"
                             name="status" placeholder="{{__('Status')}}" >
-                            @if($item->status === setting('ordering_pending_status'))
-                                <option value="{{setting('ordering_pending_status')}}">{{str(setting('ordering_pending_status'))->ucfirst()}}</option>
-                            @endif
-                            @if($item->status === setting('ordering_prepared_status'))
-                                <option value="{{setting('ordering_prepared_status')}}">{{str(setting('ordering_prepared_status'))->ucfirst()}}</option>
-                            @endif
-                            @if($item->status === setting('ordering_withdrew_status'))
-                                <option value="{{setting('ordering_withdrew_status')}}">{{str(setting('ordering_withdrew_status'))->ucfirst()}}</option>
-                            @endif
-                            <option value="{{setting('ordering_shipped_status')}}">{{str(setting('ordering_shipped_status'))->ucfirst()}}</option>
-                            <option value="{{setting('ordering_delivered_status')}}">{{str(setting('ordering_delivered_status'))->ucfirst()}}</option>
-                            <option value="{{setting('ordering_cancelled_status')}}">{{str(setting('ordering_cancelled_status'))->ucfirst()}}</option>
-                            <option value="{{setting('ordering_refunded_status')}}">{{str(setting('ordering_refunded_status'))->ucfirst()}}</option>
-                            <option value="{{setting('ordering_paid_status')}}">{{str(setting('ordering_paid_status'))->ucfirst()}}</option>
+
+                            @foreach($statues as $status)
+                                <option value="{{$status->payload}}">{{str($status->payload)->ucfirst()}}</option>
+                            @endforeach
                         </x-splade-select>
                     </x-splade-form>
                 </x-splade-cell>

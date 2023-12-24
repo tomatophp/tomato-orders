@@ -19,6 +19,7 @@ use TomatoPHP\TomatoOrders\Settings\OrderingSettings;
 use ProtoneMedia\Splade\Facades\Toast;
 use TomatoPHP\TomatoAdmin\Facade\Tomato;
 use TomatoPHP\TomatoProducts\Models\Product;
+use TomatoPHP\TomatoSettings\Models\Setting;
 
 class OrderController extends Controller
 {
@@ -38,6 +39,16 @@ class OrderController extends Controller
      */
     public function index(Request $request): View|JsonResponse
     {
+        $settings = Setting::whereIn('name', [
+            'ordering_pending_status',
+            'ordering_prepared_status',
+            'ordering_withdrew_status',
+            'ordering_shipped_status',
+            'ordering_delivered_status',
+            'ordering_cancelled_status',
+            'ordering_refunded_status',
+            'ordering_paid_status',
+        ])->get();
         return Tomato::index(
             request: $request,
             model: $this->model,
@@ -50,6 +61,9 @@ class OrderController extends Controller
                 "name",
                 "phone",
                 "uuid"
+            ],
+            data: [
+                'statues' => $settings
             ]
         );
     }
