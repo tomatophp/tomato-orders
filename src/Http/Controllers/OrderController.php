@@ -91,10 +91,33 @@ class OrderController extends Controller
     /**
      * @return View
      */
-    public function create(): View
+    public function create(Request $request): View
     {
+        $items = [];
+        if($request->has('ids') && $request->get('ids')){
+            foreach ($request->get('ids') as $id){
+                $product = Product::where('id', $id)->with('productMetas', function ($q){
+                    $q->where('key', 'options');
+                })->first();
+
+                $items[] = [
+                    'item' => $product,
+                    'price' => $product->price,
+                    'discount' => $product->discount,
+                    'qty' => 1,
+                    'tax' => $product->tax,
+                    'total' => ($product->price+$product->tax)-$product->discount,
+                    'options' => (object)[]
+                ];
+            }
+
+        }
+
         return Tomato::create(
             view: 'tomato-orders::orders.create',
+            data: [
+                'items' => $items
+            ]
         );
     }
 

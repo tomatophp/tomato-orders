@@ -3,7 +3,7 @@
         "uuid" => setting("ordering_stating_code") ."-". \Illuminate\Support\Str::random(8),
         "issue_date" => \Carbon\Carbon::now()->format("d/m/Y"),
         "due_date"=> \Carbon\Carbon::now()->addDays(7)->format("d/m/Y"),
-        "items" => [
+        "items" => count($items) ? $items : [
             [
                 "item" => "",
                 "price" => 0,
