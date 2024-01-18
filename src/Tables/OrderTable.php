@@ -100,7 +100,6 @@ class OrderTable extends AbstractTable
             ->boolFilter(key: 'is_approved')
             ->dateFilter()
             ->defaultSort('id', 'desc')
-            ->column(key: 'actions',label: trans('tomato-admin::global.crud.actions'))
             ->column(
                 key: 'id',
                 label: __('Id'),
@@ -142,6 +141,7 @@ class OrderTable extends AbstractTable
                 label: __('Created At'),
                 sortable: true
             )
+            ->column(key: 'actions',label: trans('tomato-admin::global.crud.actions'))
             ->paginate(10);
 
 
