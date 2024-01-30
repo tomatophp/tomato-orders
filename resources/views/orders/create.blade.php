@@ -1,5 +1,6 @@
 <x-tomato-admin-container label="{{trans('tomato-admin::global.crud.create')}} {{__('Order')}}">
     <x-splade-form class="flex flex-col space-y-4" action="{{route('admin.orders.store')}}" method="post" :default='[
+        "account_id" => request()->get("account_id") ? config("tomato-crm.model")::find(request()->get("account_id")) : null,
         "uuid" => setting("ordering_stating_code") ."-". \Illuminate\Support\Str::random(8),
         "issue_date" => \Carbon\Carbon::now()->format("d/m/Y"),
         "due_date"=> \Carbon\Carbon::now()->addDays(7)->format("d/m/Y"),
@@ -46,13 +47,22 @@
                         {{__('To:')}}
                     </div>
                     <div class="mt-4">
-                        <x-tomato-search
-                            :remote-url="route('admin.orders.user')"
-                            remote-root="data"
-                            name="account_id"
-                            placeholder="{{__('Select Account')}}"
-                            label="{{__('Account')}}"
-                        />
+                        <div class="flex justifiy-start gap-4">
+                            <div class="w-full">
+                                <x-tomato-search
+                                    :remote-url="route('admin.orders.user')"
+                                    remote-root="data"
+                                    name="account_id"
+                                    placeholder="{{__('Select Account')}}"
+                                    label="{{__('Account')}}"
+                                />
+                            </div>
+                            <div>
+                                <x-tomato-admin-button modal :href="route('admin.orders.account')" title="{{__('Create Account')}}">
+                                    <i class="bx bx-plus"></i>
+                                </x-tomato-admin-button>
+                            </div>
+                        </div>
                         <div v-if="form.errors.account_id"
                              class="text-danger-500 mt-2 text-xs font-chakra flex gap-2 mb-[6px]">
                             <p v-text="form.errors.account_id"> </p>
@@ -62,20 +72,20 @@
                                 @{{form.account_id.name}}
                             </div>
                             <div class="text-sm">
-                                @{{form.account_id.email}}
-                            </div>
-                            <div class="text-sm">
                                 @{{form.account_id.phone}}
                             </div>
-                            <div class="text-sm">
-                                @{{form.account_id.address}}
+                            <div v-if="form.account_id.locations">
+                                <div class="text-sm">
+                                    @{{form.account_id.locations[0].home_number}} @{{form.account_id.locations[0].street}} | {{__('Floor')}} : @{{form.account_id.locations[0].floor_number}} | {{__('Flat')}} : @{{form.account_id.locations[0].flat_number}}
+                                </div>
+                                <div class="text-sm">
+                                     @{{form.account_id.locations[0].city.name}}, @{{form.account_id.locations[0].area.name}} @{{form.account_id.locations[0].zip ? ' | ' +form.account_id.locations[0].zip : null }}
+                                </div>
+                                <div class="text-sm">
+                                    @{{form.account_id.locations[0].country.name}}
+                                </div>
                             </div>
-                            <div class="text-sm">
-                                @{{form.account_id.zip}} @{{form.account_id.city}}
-                            </div>
-                            <div class="text-sm">
-                                @{{form.account_id.country?form.account_id.country.name:''}}
-                            </div>
+
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,7 @@
 <x-tomato-admin-container label="{{__('Shipping Order')}} # {{$model->uuid}}">
-    <x-splade-form method="POST" action="{{route('admin.orders.ship', $model->id)}}" :default="$model" class="flex flex-col gap-4">
+    <x-splade-form method="POST" action="{{route('admin.orders.ship', $model->id)}}" :default="array_merge($model->toArray(), [
+        'shipping' => ($model->shipping > 0) ? $model->shipping : (setting('ordering_active_shipping_fees') ? setting('ordering_shipping_fees') : 0),
+    ])" class="flex flex-col gap-4">
         <x-splade-select
             choices
             remote-url="{{route('admin.shipping-vendors.api')}}"
@@ -7,6 +9,17 @@
             name="shipping_vendor_id"
             label="{{__('Shipping Vendor')}}"
             placeholder="{{__('Shipping Vendor')}}"
+            option-label="name"
+            option-value="id"
+        />
+        <x-splade-select
+            choices
+            v-bind:disabled="!form.shipping_vendor_id"
+            remote-url="`{{route('admin.deliveries.api')}}?shipping_vendor_id=${form.shipping_vendor_id}`"
+            remote-root="data"
+            name="shipper_id"
+            label="{{__('Shipping Delivery Boy')}}"
+            placeholder="{{__('Shipping Delivery Boy')}}"
             option-label="name"
             option-value="id"
         />
@@ -43,9 +56,6 @@
                 option-value="id"
             />
         </div>
-        <x-splade-defer>
-            <x-splade-input name="shipping" type="number" label="{{__('Shipping Cost')}}" />
-        </x-splade-defer>
 
         <x-tomato-admin-submit spinner label="{{__('Ship')}}" />
     </x-splade-form>

@@ -183,7 +183,7 @@
                     {{__('Total')}}
                 </div>
                 <div>
-                    {!! dollar($model->total) !!}
+                    {!! dollar($model->total + $model->shipping) !!}
                 </div>
             </div>
         </div>

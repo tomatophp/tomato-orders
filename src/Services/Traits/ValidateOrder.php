@@ -48,10 +48,7 @@ trait ValidateOrder
             'payment_vendor_id' => 'nullable|max:255|string',
         ];
 
-        if($edit){
-            $rules['uuid'] = 'required|max:255|string|unique:orders,uuid,'.$request->id;
-        }
-        else {
+        if(!$edit){
             $rules['uuid'] = 'required|max:255|string|unique:orders,uuid';
         }
 

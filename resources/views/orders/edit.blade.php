@@ -32,32 +32,45 @@
                         {{__('To:')}}
                     </div>
                     <div class="mt-4">
-                        <x-tomato-search
-                            :remote-url="route('admin.orders.user')"
-                            remote-root="data"
-                            name="account_id"
-                            placeholder="{{__('Select Account')}}"
-                            label="{{__('Account')}}"
-                        />
+                        <div class="flex justifiy-start gap-4">
+                            <div class="w-full">
+                                <x-tomato-search
+                                    :remote-url="route('admin.orders.user')"
+                                    remote-root="data"
+                                    name="account_id"
+                                    placeholder="{{__('Select Account')}}"
+                                    label="{{__('Account')}}"
+                                />
+                            </div>
+                            <div>
+                                <x-tomato-admin-button modal :href="route('admin.orders.account')" title="{{__('Create Account')}}">
+                                    <i class="bx bx-plus"></i>
+                                </x-tomato-admin-button>
+                            </div>
+                        </div>
+                        <div v-if="form.errors.account_id"
+                             class="text-danger-500 mt-2 text-xs font-chakra flex gap-2 mb-[6px]">
+                            <p v-text="form.errors.account_id"> </p>
+                        </div>
                         <div v-if="form.account_id">
                             <div class="text-lg font-bold mt-2">
                                 @{{form.account_id.name}}
                             </div>
                             <div class="text-sm">
-                                @{{form.account_id.email}}
-                            </div>
-                            <div class="text-sm">
                                 @{{form.account_id.phone}}
                             </div>
-                            <div class="text-sm">
-                                @{{form.account_id.address}}
+                            <div v-if="form.account_id.locations">
+                                <div class="text-sm">
+                                    @{{form.account_id.locations[0].home_number}} @{{form.account_id.locations[0].street}} | {{__('Floor')}} : @{{form.account_id.locations[0].floor_number}} | {{__('Flat')}} : @{{form.account_id.locations[0].flat_number}}
+                                </div>
+                                <div class="text-sm">
+                                    @{{form.account_id.locations[0].city.name}}, @{{form.account_id.locations[0].area.name}} @{{form.account_id.locations[0].zip ? ' | ' +form.account_id.locations[0].zip : null }}
+                                </div>
+                                <div class="text-sm">
+                                    @{{form.account_id.locations[0].country.name}}
+                                </div>
                             </div>
-                            <div class="text-sm">
-                                @{{form.account_id.zip}} @{{form.account_id.city}}
-                            </div>
-                            <div class="text-sm">
-                                @{{form.account_id.country?form.account_id.country.name:''}}
-                            </div>
+
                         </div>
                     </div>
                 </div>

@@ -122,6 +122,38 @@
             </x-tomato-settings-card>
         </div>
         <div>
+            <x-tomato-settings-card :title="__('Order Shipping Settings')" :description="__('Change And Active Shipping Fees')">
+                <x-splade-form method="post" action="{{route('admin.orders.settings.update')}}" class="mt-6 space-y-6" :default="$settings">
+                    <div>
+                        <x-splade-checkbox
+                            name="ordering_active_shipping_fees"
+                            :label="__('Active Shipping Fees')"
+                        />
+                        @if(config('tomato-settings.helpers'))
+                            <div class="p-1">
+                                <small class="text-red-500"><code>setting('ordering_active_shipping_fees')</code></small>
+                            </div>
+                        @endif
+                    </div>
+                    <div>
+                        <x-splade-input
+                            name="ordering_shipping_fees"
+                            :label="__('Shipping Fees')"
+                            type="number"
+                        />
+                        @if(config('tomato-settings.helpers'))
+                            <div class="p-1">
+                                <small class="text-red-500"><code>setting('ordering_shipping_fees')</code></small>
+                            </div>
+                        @endif
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <x-splade-submit :label="trans('tomato-admin::global.save')" />
+                    </div>
+                </x-splade-form>
+            </x-tomato-settings-card>
+        </div>
+        <div>
             <x-tomato-settings-card :title="__('Order Recipe Settings')" :description="__('Change How Recipe looks')">
                 <x-splade-form method="post" action="{{route('admin.orders.settings.update')}}" class="mt-6 space-y-6" :default="$settings">
                     @if(class_exists(\TomatoPHP\TomatoInventory\TomatoInventoryServiceProvider::class))

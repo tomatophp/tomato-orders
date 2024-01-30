@@ -114,7 +114,7 @@
             <th>{{__('Total')}}</th>
             <td>
                 <b>
-                    {!! dollar($model->total) !!}
+                    {!! dollar($model->total + $item->shipping) !!}
                 </b>
             </td>
         </tr>
