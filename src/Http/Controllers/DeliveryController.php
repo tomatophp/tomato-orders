@@ -41,6 +41,9 @@ class DeliveryController extends Controller
         return Tomato::json(
             request: $request,
             model: \TomatoPHP\TomatoOrders\Models\Delivery::class,
+            filters: [
+                'shipping_vendor_id'
+            ]
         );
     }
 

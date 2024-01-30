@@ -52,6 +52,8 @@ trait FindOrder
         $order->items = $this->findOrderItems();
         $order->issue_date = $order->meta('issue_date');
         $order->due_date = $order->meta('due_date');
-        $order->account_id = $order->account;
+        $order->account_id = $order->account()->with('locations', function ($q){
+            $q->where('is_main', 1)->first();
+        })->with('locations.country', 'locations.area', 'locations.city')->first();
     }
 }

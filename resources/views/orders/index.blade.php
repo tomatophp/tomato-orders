@@ -24,7 +24,7 @@
                     <x-tomato-admin-row table type="tel" :value="$item->phone" />
                 </x-splade-cell>
                 <x-splade-cell total>
-                    {!! dollar($item->total) !!}
+                    {!! dollar($item->total + $item->shipping) !!}
                 </x-splade-cell>
                 <x-splade-cell status use="$statues">
                     <x-splade-form class="w-64" method="POST" action="{{route('admin.orders.status', $item->id)}}" :default="$item" submit-on-change>

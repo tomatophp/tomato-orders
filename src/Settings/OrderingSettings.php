@@ -41,6 +41,9 @@ class OrderingSettings extends Settings
 
     public bool $ordering_show_registration_number;
 
+    public bool $ordering_active_shipping_fees;
+    public float $ordering_shipping_fees;
+
 
     public static function group(): string
     {

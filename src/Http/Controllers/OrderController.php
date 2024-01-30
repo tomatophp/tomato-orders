@@ -209,7 +209,9 @@ class OrderController extends Controller
                 ->orWhere('email', 'like', "%$q%")
                 ->orWhere('phone', 'like', "%$q%");
         })
-            ->with('locations')->get();
+            ->with('locations', function ($q){
+                $q->where('is_main', true)->first();
+            })->with('locations.city', 'locations.area', 'locations.country')->get();
         if($account){
             return response()->json($account);
         }
@@ -279,5 +281,49 @@ class OrderController extends Controller
 
     public function print(Order $model){
         return view('tomato-orders::orders.print', compact('model'));
+    }
+
+    public function account()
+    {
+        return view('tomato-orders::orders.account');
+    }
+
+    public function storeAccount(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|max:255|string',
+            'phone' => 'required|max:255|string|unique:accounts,phone',
+            'street' => 'required|string',
+            'home_number' => 'required|max:255|string',
+            'flat_number' => 'required|max:255|string',
+            'floor_number' => 'required|max:255|string',
+            'country_id' => 'required|integer|exists:cities,id',
+            'city_id' => 'required|integer|exists:cities,id',
+            'area_id' => 'required|integer|exists:areas,id',
+        ]);
+
+        $request->merge([
+            "type" => "customer",
+            "loginBy" => "phone",
+            "is_login" => false,
+            "is_active" => true,
+            "email" => $request->get('phone') .'@phone.com',
+            "username" => $request->get('phone'),
+        ]);
+
+        $account = config('tomato-crm.model')::create($request->all());
+        $account->locations()->create([
+            'country_id' => $request->get('country_id'),
+            'city_id' => $request->get('city_id'),
+            'area_id' => $request->get('area_id'),
+            'street' => $request->get('street'),
+            'home_number' => $request->get('home_number'),
+            'flat_number' => $request->get('flat_number'),
+            'floor_number' => $request->get('floor_number'),
+            'is_main' => true,
+        ]);
+
+        Toast::success(__('Account created successfully'))->autoDismiss(2);
+        return redirect()->to(route('admin.orders.create').'?account_id='.$account->id);
     }
 }
