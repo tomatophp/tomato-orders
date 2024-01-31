@@ -2,7 +2,7 @@
 
 use Spatie\LaravelSettings\Migrations\SettingsMigration;
 
-class OrderingSettings extends SettingsMigration
+return new class extends SettingsMigration
 {
     public function up(): void
     {
@@ -25,4 +25,4 @@ class OrderingSettings extends SettingsMigration
         $this->migrator->add('ordering.ordering_done_status', "done");
         $this->migrator->add('ordering.ordering_paid_status', "payed");
     }
-}
+};
