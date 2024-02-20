@@ -186,10 +186,22 @@
                     {!! dollar($model->total + $model->shipping) !!}
                 </div>
             </div>
+            @if($model->notes)
+            <div class="flex flex-col gap-4 py-4 text-gray-800">
+                <div class="font-bold">
+                    {{__('Notes')}}
+                </div>
+                <div>
+                    {{ $model->notes }}
+                </div>
+            </div>
+             @endif
         </div>
     </div>
     <div class="flex justify-start gap-2 pt-3">
-{{--        <x-tomato-admin-button  label="{{__('Print')}}" :href="route('admin.orders.print', $model->id)"/>--}}
+        <a href="{{route('admin.orders.print', $model->id)}}" target="_blank" class="filament-button inline-flex items-center justify-center py-1 gap-1 font-medium rounded-lg border focus:outline-none focus:ring-offset-2 focus:ring-2 focus:ring-inset dark:focus:ring-offset-0 min-h-[2.25rem] px-4 text-sm shadow-sm focus:ring-white filament-page-button-action bg-primary-600 hover:bg-primary-500 focus:bg-primary-700 focus:ring-offset-primary-700 text-white border-transparent cursor-pointer transition-colors ease-in-out duration-20">
+            {{__('Print')}}
+        </a>
         <x-tomato-admin-button warning label="{{__('Edit')}}" :href="route('admin.orders.edit', $model->id)"/>
         <x-tomato-admin-button danger :href="route('admin.orders.destroy', $model->id)"
                                confirm="{{trans('tomato-admin::global.crud.delete-confirm')}}"
