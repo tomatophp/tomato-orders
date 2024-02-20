@@ -10,8 +10,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
+use TomatoPHP\TomatoBranches\Models\Branch;
+use TomatoPHP\TomatoBranches\Models\Company;
 use TomatoPHP\TomatoLocations\Models\Area;
 use TomatoPHP\TomatoLocations\Models\City;
+use TomatoPHP\TomatoLocations\Models\Country;
 use TomatoPHP\TomatoOrders\Models\Order;
 use TomatoPHP\TomatoOrders\Models\OrdersItem;
 use TomatoPHP\TomatoOrders\Facades\TomatoOrdering;
@@ -93,6 +96,34 @@ class OrderController extends Controller
      */
     public function create(Request $request): View
     {
+        $checkIfCompanyExists = Company::count();
+        if($checkIfCompanyExists < 1){
+            $company = Company::create([
+                'country_id' => Country::first()?->id,
+                'name' => "3x1",
+                'ceo' => "CEO",
+                'address' => "Cairo, Egypt",
+                'city' => "Cairo",
+                'zip' => "110821",
+                'email' => "info@3x1.io",
+                'phone' => "+201207860084",
+                'website'=> "https://docs.tomatophp.com"
+            ]);
+        }
+        else {
+            $company = Company::first();
+        }
+
+        $checkIfBranchExists = Branch::count();
+        if($checkIfBranchExists < 1){
+            $branch = Branch::create([
+                "name" => "Main",
+                'company_id' => $company->id,
+                'branch_number' => "001",
+                'phone' => "+201207860084",
+                'address' => "Cairo, Egypt"
+            ]);
+        }
         $items = [];
         if($request->has('ids') && $request->get('ids')){
             foreach ($request->get('ids') as $id){
