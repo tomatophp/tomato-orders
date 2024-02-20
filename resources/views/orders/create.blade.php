@@ -74,7 +74,7 @@
                             <div class="text-sm">
                                 @{{form.account_id.phone}}
                             </div>
-                            <div v-if="form.account_id.locations">
+                            <div v-if="form.account_id.locations.length > 0">
                                 <div class="text-sm">
                                     @{{form.account_id.locations[0].home_number}} @{{form.account_id.locations[0].street}} | {{__('Floor')}} : @{{form.account_id.locations[0].floor_number}} | {{__('Flat')}} : @{{form.account_id.locations[0].flat_number}}
                                 </div>
@@ -257,7 +257,9 @@
                 </div>
             </x-tomato-items>
         </div>
-
+        <div>
+            <x-splade-textarea name="notes" :label="__('Notes')" placeholder="{{__('Notes')}}" />
+        </div>
 
         <div class="flex justify-start gap-2 pt-3">
             <x-tomato-admin-submit  label="{{__('Save')}}" :spinner="true" />

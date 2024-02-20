@@ -59,8 +59,7 @@
                             <div class="text-sm">
                                 @{{form.account_id.phone}}
                             </div>
-                            <div v-if="form.account_id.locations">
-                                <div class="text-sm">
+                            <div v-if="form.account_id.locations.length > 0">                                <div class="text-sm">
                                     @{{form.account_id.locations[0].home_number}} @{{form.account_id.locations[0].street}} | {{__('Floor')}} : @{{form.account_id.locations[0].floor_number}} | {{__('Flat')}} : @{{form.account_id.locations[0].flat_number}}
                                 </div>
                                 <div class="text-sm">
@@ -141,21 +140,6 @@
                                 placeholder="{{__('Select Item')}}"
                                 label="{{__('Product')}}"
                             />
-                            {{--                            <x-splade-data :default="['switchInput'=>false]">--}}
-                            {{--                                <div class="w-full">--}}
-                            {{--                                    <x-splade-input--}}
-                            {{--                                        v-if="!data.switchInput"--}}
-                            {{--                                        type="text"--}}
-                            {{--                                        placeholder="Item Name"--}}
-                            {{--                                        v-model="items.main[key].item"--}}
-                            {{--                                    />--}}
-                            {{--                                </div>--}}
-                            {{--                                <div>--}}
-                            {{--                                    <button @click.prevent="data.switchInput = !data.switchInput" class="filament-button inline-flex items-center justify-center py-1 gap-1 font-medium rounded-lg border transition-colors focus:outline-none focus:ring-offset-2 focus:ring-2 focus:ring-inset dark:focus:ring-offset-0 min-h-[2.25rem] px-4 text-sm shadow-sm focus:ring-white filament-page-button-action bg-primary-600 hover:bg-primary-500 focus:bg-primary-700 focus:ring-offset-primary-700 text-white border-transparent">--}}
-                            {{--                                        <i class="bx bx-refresh"></i>--}}
-                            {{--                                    </button>--}}
-                            {{--                                </div>--}}
-                            {{--                            </x-splade-data>--}}
                         </div>
                         <x-splade-input
                             type="number"
@@ -176,23 +160,6 @@
                                 v-model="items.main[key].tax"
                                 @input="items.updateTotal(key, data.discount_type)"
                             />
-
-                            {{--                            <x-splade-data :default="['discount_type'=>'per']" remember="tax" >--}}
-                            {{--                                --}}
-                            {{--                                <div class="flex justify-start gap-4">--}}
-                            {{--                                    <div>--}}
-                            {{--                                       --}}
-                            {{--                                    </div>--}}
-                            {{--                                    <div>--}}
-                            {{--                                        <button v-show="data.discount_type === 'am'" @click.prevent="data.discount_type = 'per'" class="filament-button inline-flex items-center justify-center py-1 gap-1 font-medium rounded-lg border transition-colors focus:outline-none focus:ring-offset-2 focus:ring-2 focus:ring-inset dark:focus:ring-offset-0 min-h-[2.25rem] px-4 text-sm shadow-sm focus:ring-white filament-page-button-action bg-primary-600 hover:bg-primary-500 focus:bg-primary-700 focus:ring-offset-primary-700 text-white border-transparent">--}}
-                            {{--                                            <i class="bx bxs-discount"></i>--}}
-                            {{--                                        </button>--}}
-                            {{--                                        <button v-show="data.discount_type === 'per'" @click.prevent="data.discount_type = 'am'" class="filament-button inline-flex items-center justify-center py-1 gap-1 font-medium rounded-lg border transition-colors focus:outline-none focus:ring-offset-2 focus:ring-2 focus:ring-inset dark:focus:ring-offset-0 min-h-[2.25rem] px-4 text-sm shadow-sm focus:ring-white filament-page-button-action bg-primary-600 hover:bg-primary-500 focus:bg-primary-700 focus:ring-offset-primary-700 text-white border-transparent">--}}
-                            {{--                                            %--}}
-                            {{--                                        </button>--}}
-                            {{--                                    </div>--}}
-                            {{--                                </div>--}}
-                            {{--                            </x-splade-data>--}}
                         </div>
 
                         <x-splade-input
@@ -263,6 +230,10 @@
                     </div>
                 </div>
             </x-tomato-items>
+        </div>
+
+        <div>
+            <x-splade-textarea name="notes" :label="__('Notes')" placeholder="{{__('Notes')}}" />
         </div>
 
 
