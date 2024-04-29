@@ -6,7 +6,7 @@
           <x-splade-input :label="__('Delivery Estimation')" name="delivery_estimation" type="text"  :placeholder="__('Delivery Estimation')" />
           <x-splade-input :label="__('Phone')" :placeholder="__('Phone')" type='tel' name="phone" />
           <x-splade-input :label="__('Address')" name="address" type="text"  :placeholder="__('Address')" />
-          <x-splade-checkbox :label="__('Is activated')" name="is_activated" label="Is activated" />
+          <x-splade-checkbox :label="__('Is activated')" name="is_activated"/>
 
 
         <div class="flex justify-start gap-2 pt-3">

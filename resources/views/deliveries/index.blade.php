@@ -7,6 +7,9 @@
             {{trans('tomato-admin::global.crud.create-new')}} {{__('Delivery')}}
         </x-tomato-admin-button>
     </x-slot:buttons>
+    <x-slot:icon>
+        bx bxs-car
+    </x-slot:icon>
 
     <div class="pb-12">
         <div class="mx-auto">

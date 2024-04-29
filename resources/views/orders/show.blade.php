@@ -93,7 +93,7 @@
         </div>
     </div>
     <div>
-        <div class="grid grid-cols-12 gap-4 border-b py-4 my-4 font-bold">
+        <div class="grid grid-cols-12 gap-4 border-b dark:border-zinc-700 py-4 my-4 font-bold">
             <div class="col-span-4 ">
                 {{__('Item')}}
             </div>
@@ -115,7 +115,7 @@
         </div>
         <div class="flex flex-col gap-4">
             @foreach($model->ordersItems as $item)
-                <div class="grid grid-cols-12 gap-4 border-b py-4">
+                <div class="grid grid-cols-12 gap-4 border-b dark:border-zinc-700 py-4">
                     <div class="col-span-4 flex  flex-col justify-start">
                         <div>
                             {{ $item->product?->name }}
@@ -146,7 +146,7 @@
 
         </div>
         <div class="flex flex-col gap-4 mt-4">
-            <div class="flex justify-between gap-4 py-4 border-b">
+            <div class="flex justify-between gap-4 py-4 border-b dark:border-zinc-700">
                 <div class="font-bold">
                     {{__('Sub Total')}}
                 </div>
@@ -154,7 +154,7 @@
                     {!! dollar(($model->total + $model->discount) - ($model->vat + $model->shipping)) !!}
                 </div>
             </div>
-            <div class="flex justify-between gap-4 py-4 border-b text-success-500">
+            <div class="flex justify-between gap-4 py-4 border-b dark:border-zinc-700 text-success-500">
                 <div class="font-bold">
                     {{__('Tax')}}
                 </div>
@@ -162,7 +162,7 @@
                     {!! dollar($model->vat ) !!}
                 </div>
             </div>
-            <div class="flex justify-between gap-4 py-4 border-b text-success-500">
+            <div class="flex justify-between gap-4 py-4 border-b dark:border-zinc-700 text-success-500">
                 <div class="font-bold">
                     {{__('Shipping')}}
                 </div>
@@ -170,7 +170,7 @@
                     {!! dollar($model->shipping ) !!}
                 </div>
             </div>
-            <div class="flex justify-between gap-4 py-4 border-b text-danger-500">
+            <div class="flex justify-between gap-4 py-4 border-b dark:border-zinc-700 text-danger-500">
                 <div class="font-bold">
                     {{__('Discount')}}
                 </div>
@@ -178,7 +178,7 @@
                     {!! dollar($model->discount ) !!}
                 </div>
             </div>
-            <div class="flex justify-between gap-4 py-4 border-b text-primary-500">
+            <div class="flex justify-between gap-4 py-4 border-b dark:border-zinc-700 text-primary-500">
                 <div class="font-bold">
                     {{__('Total')}}
                 </div>

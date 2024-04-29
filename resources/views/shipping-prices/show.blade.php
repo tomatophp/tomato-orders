@@ -1,15 +1,15 @@
 <x-tomato-admin-container label="{{trans('tomato-admin::global.crud.view')}} {{__('Shipping Prices')}} #{{$model->id}}">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
 
-          <x-tomato-admin-row :label="__('Shipping vendor')" :value="$model->Shipping_vendor->name" type="text" />
+          <x-tomato-admin-row :label="__('Shipping vendor')" :value="$model->shippingVendor?->name" type="text" />
 
-          <x-tomato-admin-row :label="__('Delivery')" :value="$model->Delivery->name" type="text" />
+          <x-tomato-admin-row :label="__('Delivery')" :value="$model->delivery?->name" type="text" />
 
-          <x-tomato-admin-row :label="__('Country')" :value="$model->Country->name" type="text" />
+          <x-tomato-admin-row :label="__('Country')" :value="$model->country?->name" type="text" />
 
-          <x-tomato-admin-row :label="__('City')" :value="$model->City->name" type="text" />
+          <x-tomato-admin-row :label="__('City')" :value="$model->city?->name" type="text" />
 
-          <x-tomato-admin-row :label="__('Area')" :value="$model->Area->name" type="text" />
+          <x-tomato-admin-row :label="__('Area')" :value="$model->area?->name" type="text" />
 
           <x-tomato-admin-row :label="__('Type')" :value="$model->type" type="string" />
 
