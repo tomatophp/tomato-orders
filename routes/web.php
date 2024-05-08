@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['web','auth', 'splade', 'verified'])->name('admin.')->group(function () {
+Route::middleware(array_merge(['splade', 'auth'], config('tomato-admin.route_middlewares')))->name('admin.')->group(function () {
     Route::get('admin/orders', [\TomatoPHP\TomatoOrders\Http\Controllers\OrderController::class, 'index'])->name('orders.index');
     Route::get('admin/orders/api', [\TomatoPHP\TomatoOrders\Http\Controllers\OrderController::class, 'api'])->name('orders.api');
     Route::get('admin/orders/account', [\TomatoPHP\TomatoOrders\Http\Controllers\OrderController::class, 'account'])->name('orders.account');
@@ -41,7 +41,7 @@ Route::middleware(['web','auth',  'verified'])->name('admin.')->group(function (
 
 
 
-Route::middleware(['web','auth', 'splade', 'verified'])->name('admin.')->group(function () {
+Route::middleware(array_merge(['splade', 'auth'], config('tomato-admin.route_middlewares')))->name('admin.')->group(function () {
     Route::get('admin/deliveries', [\TomatoPHP\TomatoOrders\Http\Controllers\DeliveryController::class, 'index'])->name('deliveries.index');
     Route::get('admin/deliveries/api', [\TomatoPHP\TomatoOrders\Http\Controllers\DeliveryController::class, 'api'])->name('deliveries.api');
     Route::get('admin/deliveries/create', [\TomatoPHP\TomatoOrders\Http\Controllers\DeliveryController::class, 'create'])->name('deliveries.create');
@@ -52,7 +52,7 @@ Route::middleware(['web','auth', 'splade', 'verified'])->name('admin.')->group(f
     Route::delete('admin/deliveries/{model}', [\TomatoPHP\TomatoOrders\Http\Controllers\DeliveryController::class, 'destroy'])->name('deliveries.destroy');
 });
 
-Route::middleware(['web','auth', 'splade', 'verified'])->name('admin.')->group(function () {
+Route::middleware(array_merge(['splade', 'auth'], config('tomato-admin.route_middlewares')))->name('admin.')->group(function () {
     Route::get('admin/shipping-vendors', [\TomatoPHP\TomatoOrders\Http\Controllers\ShippingVendorController::class, 'index'])->name('shipping-vendors.index');
     Route::get('admin/shipping-vendors/api', [\TomatoPHP\TomatoOrders\Http\Controllers\ShippingVendorController::class, 'api'])->name('shipping-vendors.api');
     Route::get('admin/shipping-vendors/create', [\TomatoPHP\TomatoOrders\Http\Controllers\ShippingVendorController::class, 'create'])->name('shipping-vendors.create');
@@ -63,7 +63,7 @@ Route::middleware(['web','auth', 'splade', 'verified'])->name('admin.')->group(f
     Route::delete('admin/shipping-vendors/{model}', [\TomatoPHP\TomatoOrders\Http\Controllers\ShippingVendorController::class, 'destroy'])->name('shipping-vendors.destroy');
 });
 
-Route::middleware(['web','auth', 'splade', 'verified'])->name('admin.')->group(function () {
+Route::middleware(array_merge(['splade', 'auth'], config('tomato-admin.route_middlewares')))->name('admin.')->group(function () {
     Route::get('admin/shipping-prices', [\TomatoPHP\TomatoOrders\Http\Controllers\ShippingPriceController::class, 'index'])->name('shipping-prices.index');
     Route::get('admin/shipping-prices/api', [\TomatoPHP\TomatoOrders\Http\Controllers\ShippingPriceController::class, 'api'])->name('shipping-prices.api');
     Route::get('admin/shipping-prices/create', [\TomatoPHP\TomatoOrders\Http\Controllers\ShippingPriceController::class, 'create'])->name('shipping-prices.create');
